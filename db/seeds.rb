@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Topic.destroy_all
+User.destroy_all
+
+mvc = Topic.create({title: "MVC"})
+blake = User.create({email: 'blake@gmail.com', password: 'blahblah', password_confirmation: 'blahblah'})
+
+mvcDef = Definition.create({topic_id: mvc.id, user_id: blake.id, definition: "It's cool"})
