@@ -8,7 +8,16 @@
 Topic.destroy_all
 User.destroy_all
 
+#Topics
 mvc = Topic.create({title: "MVC"})
+react = Topic.create({title: "React"})
+oop = Topic.create({title: "OOP"})
+
+#user
 blake = User.create({email: 'blake@gmail.com', password: 'blahblah', password_confirmation: 'blahblah'})
 
-mvcDef = Definition.create({topic_id: mvc.id, user_id: blake.id, definition: "It's cool"})
+
+#Definitions
+mvc_def = Definition.create({topic_id: mvc.id, user_id: blake.id, definition: "It's cool"})
+react_def =  Definition.create({topic_id: react.id, user_id: blake.id, definition: "It does stuff"})
+oop_def =  Definition.create({topic_id: oop.id, user_id: blake.id, definition: "I like objects"})

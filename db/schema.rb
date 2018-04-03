@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402182838) do
+ActiveRecord::Schema.define(version: 20180403154627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "definitions", force: :cascade do |t|
-    t.string "definition"
+    t.string "post"
     t.bigint "user_id"
     t.bigint "topic_id"
     t.datetime "created_at", null: false
