@@ -18,6 +18,6 @@ blake = User.create({email: 'blake@gmail.com', password: 'blahblah', password_co
 
 
 #Definitions
-mvc_def = Definition.create({topic_id: mvc.id, user_id: blake.id, definition: "It's cool"})
-react_def =  Definition.create({topic_id: react.id, user_id: blake.id, definition: "It does stuff"})
-oop_def =  Definition.create({topic_id: oop.id, user_id: blake.id, definition: "I like objects"})
+mvc_def = Definition.create({topic_id: mvc.id, user_id: blake.id, post: "It's cool"})
+react_def =  Definition.create({topic_id: react.id, user_id: blake.id, post: "It does stuff"})
+oop_def =  Definition.create({topic_id: oop.id, user_id: blake.id, post: "I like objects"})

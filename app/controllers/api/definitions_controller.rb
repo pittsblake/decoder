@@ -9,17 +9,17 @@ class Api::DefinitionsController < ApplicationController
   end
 
   def create
-    # @topic = Topic.find(params[:topic_id])
-    # @user = User.first
+    @topic = Topic.find(params[:topic_id])
+    @user = User.first
 
     @definition = Definition.new(definition_params)
 
-    # @topic.definitions << @definition
-    # @user.definitions << @definition
+    @topic.definitions << @definition
+    @user.definitions << @definition
  
-    @definition.save!
-    # @topic.save!
-    # @user.save!
+    # @definition.save!
+    @topic.save!
+    @user.save!
 
     render json: @definition
   end
@@ -32,6 +32,6 @@ class Api::DefinitionsController < ApplicationController
 
   private
   def definition_params
-    params.require(:definition).permit(:definition)
+    params.require(:definition).permit(:post)
   end
 end

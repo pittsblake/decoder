@@ -6,7 +6,7 @@ class Api::TopicsController < ApplicationController
 
   def show
     @topic = Topic.find(params[:id])
-    render json: @topic
+    render json: @topic, include: [:definitions]
   end
 
   def create
