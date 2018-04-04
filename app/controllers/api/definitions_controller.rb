@@ -4,7 +4,7 @@ class Api::DefinitionsController < ApplicationController
   def index
     topic = Topic.find(params[:topic_id])
     @definitions = topic.definitions.all
-    render json: @definitions
+    render json: @definitions, include: [:ratings]
   end
 
   def show
@@ -41,6 +41,6 @@ class Api::DefinitionsController < ApplicationController
 
   private
   def definition_params
-    params.require(:definition).permit(:post)
+    params.require(:definition).permit(:post, :count)
   end
 end
