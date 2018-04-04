@@ -1,6 +1,6 @@
 class Api::DefinitionsController < ApplicationController
   before_action :authenticate_user!
-  
+
   def index
     topic = Topic.find(params[:topic_id])
     @definitions = topic.definitions.all
@@ -25,10 +25,18 @@ class Api::DefinitionsController < ApplicationController
   end
 
   def update
-
+    @definition = Definition.find(params[:id])
+    @definition.update!(definition_params)
+    render json: @definition
   end
 
   def destroy
+    @definition = Definition.find(params[:id])
+    @definition.delete
+
+    render json: {
+      msg: "Definition deleted"
+    }
   end
 
   private
