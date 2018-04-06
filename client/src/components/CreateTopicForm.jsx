@@ -20,7 +20,7 @@ class CreateTopicForm extends Component {
         event.target.reset()
         const payload = {topic: this.state.topic}
         const res = await axios.post('/api/topics', payload)
-        console.log(res)
+       // console.log(res)
         this.props.getTopics()
     }
 
