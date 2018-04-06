@@ -17,7 +17,11 @@ class Home extends Component {
             <div>
                 <button onClick={this.showCreateTopicForm}>Create Topic</button>
                 {
-                    this.state.createTopic ? <CreateTopicForm getTopics = {this.props.getTopics} />: null
+                    this.state.createTopic ? 
+                    <CreateTopicForm 
+                        getTopics = {this.props.getTopics} 
+                        showCreateTopicForm = {this.showCreateTopicForm}
+                    />: null
                 }
                 {
                     this.props.topics.map((topic, i) => {

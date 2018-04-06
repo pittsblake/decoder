@@ -36,10 +36,16 @@ class TopicShowPage extends Component {
                 <Link to='/home'> Topics </Link>
                <h1>{this.state.topic.title}</h1>
                <button onClick={this.showCreateDefinitionForm}>Add Definition</button>
+               
                {
-                   this.state.createDefinition ? <CreateDefinitionForm topicId = {this.props.match.params.id} 
-                   getSingleTopic ={this.getSingleTopic} /> : null
+                   this.state.createDefinition ? 
+                   <CreateDefinitionForm 
+                    topicId = {this.props.match.params.id} 
+                    getSingleTopic ={this.getSingleTopic} 
+                    showCreateDefinitionForm = {this.showCreateDefinitionForm}
+                    /> : null
                }
+
                {
                    this.state.topic.definitions.map((def, i) => {
                         return(
