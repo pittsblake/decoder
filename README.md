@@ -5,6 +5,9 @@ application up and running.
 
 Things you may want to cover:
 
+* Deployed on heroku
+https://intense-fjord-27233.herokuapp.com/signUp
+
 * Ruby version
 
 * System dependencies
