@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 class TopicShowPage extends Component {
 
@@ -26,6 +27,7 @@ class TopicShowPage extends Component {
         
         return (
             <div>
+                <Link to='/home'> Topics </Link>
                <h1>{this.state.topic.title}</h1>
                {
                    this.state.topic.definitions.map((def) => {
