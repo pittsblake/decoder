@@ -108,7 +108,7 @@ class App extends Component {
     }
 
     const ShowTopicWrapper = (props) => {
-      return <TopicShowPage topics = {this.state.topics} {...props}/>
+      return <TopicShowPage topics={this.state.topics} {...props}/>
     }
 
     return (

@@ -3,8 +3,9 @@ class Api::DefinitionsController < ApplicationController
 
   def index
     topic = Topic.find(params[:topic_id])
-    @definitions = topic.definitions.all
-    render json: @definitions, include: [:ratings]
+    @definitions = topic.definitions.all.order(count: :desc)
+    render json: @definitions
+    
   end
 
   def show
@@ -25,9 +26,11 @@ class Api::DefinitionsController < ApplicationController
   end
 
   def update
-    @definition = Definition.find(params[:id])
-    @definition.update!(definition_params)
-    render json: @definition
+    definition = Definition.find(params[:id])
+    definition.update!(definition_params)
+    topic = Topic.find(params[:topic_id])
+    @definitions = topic.definitions.all.order(count: :desc)
+    render json: @definitions
   end
 
   def destroy

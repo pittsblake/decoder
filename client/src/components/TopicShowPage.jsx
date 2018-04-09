@@ -7,14 +7,14 @@ import CreateDefinitionForm from './CreateDefinitionForm'
 class TopicShowPage extends Component {
 
     state = {
-        topic: {
-            definitions: []
-        },
+        topic: {},
+        definitions: [],
         createDefinition: false
     }
 
-    componentDidMount = () => {
-        this.getSingleTopic()
+    componentDidMount = async () => {
+        await this.getSingleTopic()
+        await this.getDefinitions()
     }
 
     getSingleTopic = async () => {
@@ -26,53 +26,60 @@ class TopicShowPage extends Component {
         })
     }
 
-    showCreateDefinitionForm = () =>{
-        this.setState({createDefinition: !this.state.createDefinition})
+    getDefinitions = async () => {
+        const topicId = this.props.match.params.id
+        const res = await axios.get(`/api/topics/${topicId}/definitions`)
+        this.setState({
+            definitions: res.data
+        })
     }
 
-    addToCounter = async(id, event) =>{
+    showCreateDefinitionForm = () => {
+        this.setState({ createDefinition: !this.state.createDefinition })
+    }
+
+    addToCounter = async (id) => {
         const topicId = this.props.match.params.id
-        const updateCounter = this.state.topic.definitions.find((definition) => {
+        const updateCounter = this.state.definitions.find((definition) => {
             if (id == definition.id) {
                 return definition.count++
-            } 
+            }
         })
         const updatedDefinition = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
-        await this.setState({
-            definitions: updatedDefinition
+        this.setState({
+            definitions: updatedDefinition.data
         })
-        //this.getSingleTopic()
     }
 
     render() {
-        
+
         return (
             <div>
                 <Link to='/home'> Topics </Link>
-               <h1>{this.state.topic.title}</h1>
-               <button onClick={this.showCreateDefinitionForm}>Add Definition</button>
-               
-               {
-                   this.state.createDefinition ? 
-                   <CreateDefinitionForm 
-                    topicId = {this.props.match.params.id} 
-                    getSingleTopic ={this.getSingleTopic} 
-                    showCreateDefinitionForm = {this.showCreateDefinitionForm}
-                    /> : null
-               }
+                <h1>{this.state.topic.title}</h1>
+                <button onClick={this.showCreateDefinitionForm}>Add Definition</button>
 
-               {
-                   this.state.topic.definitions.map((def, i) => {
-                        return(
+                {
+                    this.state.createDefinition ?
+                        <CreateDefinitionForm
+                            topicId={this.props.match.params.id}
+                            getSingleTopic={this.getSingleTopic}
+                            showCreateDefinitionForm={this.showCreateDefinitionForm}
+                        /> : null
+                }
+
+                {
+                    this.state.definitions.map((def, i) => {
+                        return (
                             <DefinitionContainer key={i}>
-                                
+
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
-                                <button onClick={()=>this.addToCounter(def.id)}>+</button>
+                                <button onClick={() => this.addToCounter(def.id)}>+</button>
                             </DefinitionContainer>
                         )
-                   })
-               }
+                    })
+                }
             </div>
         );
     }
