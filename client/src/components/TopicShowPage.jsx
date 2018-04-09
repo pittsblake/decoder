@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 import CreateDefinitionForm from './CreateDefinitionForm'
 
 class TopicShowPage extends Component {
@@ -49,11 +50,12 @@ class TopicShowPage extends Component {
                {
                    this.state.topic.definitions.map((def, i) => {
                         return(
-                            <div key={i}>
+                            <DefinitionContainer key={i}>
                                 
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
-                            </div>
+                                <button>+</button>
+                            </DefinitionContainer>
                         )
                    })
                }
@@ -63,3 +65,14 @@ class TopicShowPage extends Component {
 }
 
 export default TopicShowPage;
+
+const DefinitionContainer = styled.div`
+    display: flex;
+    width: 60%;
+    h4 {
+        padding: 15px;
+    }
+    button {
+        height: 20px
+    }
+`
