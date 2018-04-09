@@ -30,6 +30,20 @@ class TopicShowPage extends Component {
         this.setState({createDefinition: !this.state.createDefinition})
     }
 
+    addToCounter = async(id, event) =>{
+        const topicId = this.props.match.params.id
+        const updateCounter = this.state.topic.definitions.find((definition) => {
+            if (id == definition.id) {
+                return definition.count++
+            } 
+        })
+        const updatedDefinition = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
+        await this.setState({
+            definitions: updatedDefinition
+        })
+        //this.getSingleTopic()
+    }
+
     render() {
         
         return (
@@ -54,7 +68,7 @@ class TopicShowPage extends Component {
                                 
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
-                                <button>+</button>
+                                <button onClick={()=>this.addToCounter(def.id)}>+</button>
                             </DefinitionContainer>
                         )
                    })
