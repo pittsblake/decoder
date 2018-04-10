@@ -45,9 +45,22 @@ class TopicShowPage extends Component {
                 return definition.count++
             }
         })
-        const updatedDefinition = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
+        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
         this.setState({
-            definitions: updatedDefinition.data
+            definitions: res.data
+        })
+    }
+
+    deleteFromCounter = async (id) => {
+        const topicId = this.props.match.params.id
+        const updateCounter = this.state.definitions.find((definition) => {
+            if (id == definition.id) {
+                return definition.count--
+            }
+        })
+        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
+        this.setState({
+            definitions: res.data
         })
     }
 
@@ -72,10 +85,10 @@ class TopicShowPage extends Component {
                     this.state.definitions.map((def, i) => {
                         return (
                             <DefinitionContainer key={i}>
-
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
-                                <button onClick={() => this.addToCounter(def.id)}>+</button>
+                                <button onClick={() => this.addToCounter(def.id)}> + </button>
+                                <button onClick={()=> this.deleteFromCounter(def.id)}> - </button>
                             </DefinitionContainer>
                         )
                     })
