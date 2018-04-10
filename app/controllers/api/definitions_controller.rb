@@ -1,5 +1,6 @@
 class Api::DefinitionsController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource  only: [:destroy]
 
   def index
     topic = Topic.find(params[:topic_id])
@@ -34,9 +35,9 @@ class Api::DefinitionsController < ApplicationController
   end
 
   def destroy
-    @definition = Definition.find(params[:id])
-    @definition.delete
-
+    @user = current_user
+    @definition = Definition.find(params[:id]).delete
+    
     render json: {
       msg: "Definition deleted"
     }

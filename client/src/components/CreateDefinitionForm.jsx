@@ -24,7 +24,7 @@ class CreateDefinitionForm extends Component {
         const res = await axios.post(`/api/topics/${this.props.topicId}/definitions`, payload)
         console.log(res.data)
         this.props.showCreateDefinitionForm()
-        this.props.getSingleTopic()
+        this.props.getDefinitions()
     }
 
     render() {

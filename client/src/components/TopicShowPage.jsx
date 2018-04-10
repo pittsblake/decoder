@@ -46,6 +46,7 @@ class TopicShowPage extends Component {
             }
         })
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
+        console.log(res.data)
         this.setState({
             definitions: res.data
         })
@@ -64,6 +65,12 @@ class TopicShowPage extends Component {
         })
     }
 
+    deletePost = async (id) => {
+        const topicId = this.props.match.params.id
+        const res = await axios.delete(`/api/topics/${topicId}/definitions/${id}`)
+        this.getDefinitions()
+    }
+
     render() {
 
         return (
@@ -76,7 +83,7 @@ class TopicShowPage extends Component {
                     this.state.createDefinition ?
                         <CreateDefinitionForm
                             topicId={this.props.match.params.id}
-                            getSingleTopic={this.getSingleTopic}
+                            getDefinitions={this.getDefinitions}
                             showCreateDefinitionForm={this.showCreateDefinitionForm}
                         /> : null
                 }
@@ -89,6 +96,7 @@ class TopicShowPage extends Component {
                                 <h4>{def.count}</h4>
                                 <button onClick={() => this.addToCounter(def.id)}> + </button>
                                 <button onClick={()=> this.deleteFromCounter(def.id)}> - </button>
+                                <button onClick={()=> this.deletePost(def.id)}>Delete</button>
                             </DefinitionContainer>
                         )
                     })
