@@ -9,6 +9,8 @@ class TopicShowPage extends Component {
     state = {
         topic: {},
         definitions: [],
+        btnAddColor: 'white',
+        btnDeleteColor: 'white',
         createDefinition: false
     }
 
@@ -48,7 +50,9 @@ class TopicShowPage extends Component {
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
         console.log(res.data)
         this.setState({
-            definitions: res.data
+            definitions: res.data,
+            btnAddColor: 'grey',
+            btnDeleteColor: 'white'
         })
     }
 
@@ -61,7 +65,9 @@ class TopicShowPage extends Component {
         })
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
         this.setState({
-            definitions: res.data
+            definitions: res.data,
+            btnAddColor: 'white',
+            btnDeleteColor: 'grey'
         })
     }
 
@@ -70,6 +76,8 @@ class TopicShowPage extends Component {
         const res = await axios.delete(`/api/topics/${topicId}/definitions/${id}`)
         this.getDefinitions()
     }
+
+    change
 
     render() {
 
@@ -94,8 +102,10 @@ class TopicShowPage extends Component {
                             <DefinitionContainer key={i}>
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
-                                <button onClick={() => this.addToCounter(def.id)}> + </button>
-                                <button onClick={()=> this.deleteFromCounter(def.id)}> - </button>
+
+                                <button onClick={() => this.addToCounter(def.id)} style={{backgroundColor: this.state.btnAddColor}}> + </button>
+                                <button onClick={()=> this.deleteFromCounter(def.id)} style={{backgroundColor: this.state.btnDeleteColor}}> - </button>
+
                                 <button onClick={()=> this.deletePost(def.id)}>Delete</button>
                             </DefinitionContainer>
                         )
@@ -115,6 +125,6 @@ const DefinitionContainer = styled.div`
         padding: 15px;
     }
     button {
-        height: 20px
+        height: 20px;
     }
 `
