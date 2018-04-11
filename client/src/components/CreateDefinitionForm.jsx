@@ -5,7 +5,9 @@ class CreateDefinitionForm extends Component {
     state = {
         definition: {
             post: '',
-            count: 0
+            count: 0,
+            liked: false,
+            disliked: false
         }
     }
 

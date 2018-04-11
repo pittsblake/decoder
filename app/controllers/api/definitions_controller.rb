@@ -37,7 +37,7 @@ class Api::DefinitionsController < ApplicationController
   def destroy
     @user = current_user
     @definition = Definition.find(params[:id]).delete
-    
+
     render json: {
       msg: "Definition deleted"
     }
@@ -45,6 +45,6 @@ class Api::DefinitionsController < ApplicationController
 
   private
   def definition_params
-    params.require(:definition).permit(:post, :count)
+    params.require(:definition).permit(:post, :count, :liked, :disliked)
   end
 end

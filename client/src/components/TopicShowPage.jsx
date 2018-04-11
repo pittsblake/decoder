@@ -58,12 +58,22 @@ class TopicShowPage extends Component {
 
     deleteFromCounter = async (id) => {
         const topicId = this.props.match.params.id
-        const updateCounter = this.state.definitions.find((definition) => {
+
+        let payload = this.state.definitions.find((definition) => {
             if (id == definition.id) {
-                return definition.count--
+                return definition         
             }
         })
-        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
+        
+        const decrease = payload.count - 1
+        payload = {
+            count: decrease,
+            disliked: true,
+            liked: false
+        }
+        // console.log(payload)
+
+        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, payload)
         this.setState({
             definitions: res.data,
             btnAddColor: 'white',
@@ -80,7 +90,6 @@ class TopicShowPage extends Component {
     change
 
     render() {
-
         return (
             <div>
                 <Link to='/home'> Topics </Link>
@@ -103,10 +112,10 @@ class TopicShowPage extends Component {
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
 
-                                <button onClick={() => this.addToCounter(def.id)} style={{backgroundColor: this.state.btnAddColor}}> + </button>
-                                <button onClick={()=> this.deleteFromCounter(def.id)} style={{backgroundColor: this.state.btnDeleteColor}}> - </button>
+                                <button onClick={() => this.addToCounter(def.id)} style={{ backgroundColor: this.state.btnAddColor }}> + </button>
+                                <button onClick={() => this.deleteFromCounter(def.id)} style={{ backgroundColor: this.state.btnDeleteColor }}> - </button>
 
-                                <button onClick={()=> this.deletePost(def.id)}>Delete</button>
+                                <button onClick={() => this.deletePost(def.id)}>Delete</button>
                             </DefinitionContainer>
                         )
                     })
