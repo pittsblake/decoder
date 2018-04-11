@@ -39,15 +39,24 @@ class TopicShowPage extends Component {
     showCreateDefinitionForm = () => {
         this.setState({ createDefinition: !this.state.createDefinition })
     }
+    
 
+    // Add one to the counter and save as Liked
     addToCounter = async (id) => {
         const topicId = this.props.match.params.id
-        const updateCounter = this.state.definitions.find((definition) => {
+        let payload = this.state.definitions.find((definition) => {
             if (id == definition.id) {
-                return definition.count++
+                return definition
             }
         })
-        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, updateCounter)
+
+        const increase = payload.count + 1
+        payload = {
+            count: increase,
+            liked: true,
+            disliked: false
+        }
+        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, payload)
         console.log(res.data)
         this.setState({
             definitions: res.data,
@@ -56,6 +65,7 @@ class TopicShowPage extends Component {
         })
     }
 
+    // Subtract one from counter and save as Disliked
     deleteFromCounter = async (id) => {
         const topicId = this.props.match.params.id
 
@@ -64,7 +74,7 @@ class TopicShowPage extends Component {
                 return definition         
             }
         })
-        
+
         const decrease = payload.count - 1
         payload = {
             count: decrease,
@@ -72,7 +82,6 @@ class TopicShowPage extends Component {
             liked: false
         }
         // console.log(payload)
-
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, payload)
         this.setState({
             definitions: res.data,
@@ -87,7 +96,6 @@ class TopicShowPage extends Component {
         this.getDefinitions()
     }
 
-    change
 
     render() {
         return (
