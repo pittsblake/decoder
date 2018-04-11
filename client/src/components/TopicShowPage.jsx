@@ -39,7 +39,6 @@ class TopicShowPage extends Component {
     showCreateDefinitionForm = () => {
         this.setState({ createDefinition: !this.state.createDefinition })
     }
-    
 
     // Add one to the counter and save as Liked
     addToCounter = async (id) => {
@@ -60,8 +59,6 @@ class TopicShowPage extends Component {
         console.log(res.data)
         this.setState({
             definitions: res.data,
-            btnAddColor: 'grey',
-            btnDeleteColor: 'white'
         })
     }
 
@@ -71,7 +68,7 @@ class TopicShowPage extends Component {
 
         let payload = this.state.definitions.find((definition) => {
             if (id == definition.id) {
-                return definition         
+                return definition
             }
         })
 
@@ -85,8 +82,6 @@ class TopicShowPage extends Component {
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, payload)
         this.setState({
             definitions: res.data,
-            btnAddColor: 'white',
-            btnDeleteColor: 'grey'
         })
     }
 
@@ -120,8 +115,14 @@ class TopicShowPage extends Component {
                                 <h4>{def.post}</h4>
                                 <h4>{def.count}</h4>
 
-                                <button onClick={() => this.addToCounter(def.id)} style={{ backgroundColor: this.state.btnAddColor }}> + </button>
-                                <button onClick={() => this.deleteFromCounter(def.id)} style={{ backgroundColor: this.state.btnDeleteColor }}> - </button>
+                                {
+                                    def.liked ? <button onClick={() => this.addToCounter(def.id)} style={{ backgroundColor: 'grey' }}> + </button> : <button onClick={() => this.addToCounter(def.id)} style={{ backgroundColor: 'white' }}> + </button>
+                                }
+
+                                {
+                                    def.disliked ? <button onClick={() => this.deleteFromCounter(def.id)} style={{ backgroundColor: 'grey' }}> - </button> : <button onClick={() => this.deleteFromCounter(def.id)} style={{ backgroundColor: 'white' }}> - </button>
+                                }
+
 
                                 <button onClick={() => this.deletePost(def.id)}>Delete</button>
                             </DefinitionContainer>
