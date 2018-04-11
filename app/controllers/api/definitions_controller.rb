@@ -10,6 +10,8 @@ class Api::DefinitionsController < ApplicationController
   end
 
   def show
+    @definition = Definition.find(params[:id])
+    render json: @definition, include: :likes
   end
 
   def create
