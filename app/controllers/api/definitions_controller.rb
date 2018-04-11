@@ -5,7 +5,7 @@ class Api::DefinitionsController < ApplicationController
   def index
     topic = Topic.find(params[:topic_id])
     @definitions = topic.definitions.all.order(count: :desc)
-    render json: @definitions
+    render json: @definitions, include: :likes
     
   end
 
@@ -23,7 +23,7 @@ class Api::DefinitionsController < ApplicationController
     
     @topic.save!
     @user.save!
-    render json: @definition
+    render json: @definition, include: :likes
   end
 
   def update

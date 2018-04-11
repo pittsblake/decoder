@@ -4,7 +4,7 @@ Rails.application.routes.draw do
    namespace :api do
     resources :topics do 
       resources :definitions do
-        resources :ratings 
+        resources :likes 
       end
     end
   end

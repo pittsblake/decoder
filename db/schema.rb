@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410175551) do
+ActiveRecord::Schema.define(version: 20180411170447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,17 @@ ActiveRecord::Schema.define(version: 20180410175551) do
     t.boolean "disliked"
     t.index ["topic_id"], name: "index_definitions_on_topic_id"
     t.index ["user_id"], name: "index_definitions_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.boolean "liked"
+    t.boolean "disliked"
+    t.bigint "user_id"
+    t.bigint "definition_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["definition_id"], name: "index_likes_on_definition_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -76,6 +87,8 @@ ActiveRecord::Schema.define(version: 20180410175551) do
 
   add_foreign_key "definitions", "topics"
   add_foreign_key "definitions", "users"
+  add_foreign_key "likes", "definitions"
+  add_foreign_key "likes", "users"
   add_foreign_key "ratings", "definitions"
   add_foreign_key "ratings", "users"
 end

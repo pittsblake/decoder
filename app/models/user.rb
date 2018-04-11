@@ -6,5 +6,5 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   has_many :definitions
   has_many :definitions, dependent: :destroy
-  has_many :ratings, dependent: :destroy
+  has_many :likes, dependent: :destroy
 end

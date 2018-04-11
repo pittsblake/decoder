@@ -1,5 +1,5 @@
 class Definition < ApplicationRecord
   belongs_to :user
   belongs_to :topic
-  has_many :ratings, dependent: :destroy
+  has_many :likes, dependent: :destroy
 end
