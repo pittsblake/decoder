@@ -9,20 +9,20 @@ class TopicShowPage extends Component {
     state = {
         topic: {},
         definitions: [],
-        btnAddColor: 'white',
-        btnDeleteColor: 'white',
+        //likes: [],
         createDefinition: false
     }
 
     componentDidMount = async () => {
         await this.getSingleTopic()
         await this.getDefinitions()
+
     }
 
     getSingleTopic = async () => {
         const topicId = this.props.match.params.id
         const res = await axios.get(`/api/topics/${topicId}`)
-        console.log(res.data)
+        // console.log(res.data)
         this.setState({
             topic: res.data
         })
@@ -36,31 +36,48 @@ class TopicShowPage extends Component {
         })
     }
 
+
     showCreateDefinitionForm = () => {
         this.setState({ createDefinition: !this.state.createDefinition })
     }
 
     // Add one to the counter and save as Liked
-    addToCounter = async (id) => {
+    addToCounter = async (defId) => {
         const topicId = this.props.match.params.id
-        let payload = this.state.definitions.find((definition) => {
-            if (id == definition.id) {
+        let singleDefinition = this.state.definitions.find((definition) => {
+            if (defId == definition.id) {
                 return definition
             }
         })
-
+        let payload = singleDefinition
         const increase = payload.count + 1
-        payload = {
-            count: increase,
+        payload = { count: increase }
+
+
+        let aLike = singleDefinition.likes.find((like) => {
+            return like
+        })
+        console.log(aLike)
+
+        let likePayload = aLike
+
+        likePayload = {
             liked: true,
             disliked: false
         }
-        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, payload)
-        console.log(res.data)
-        this.setState({
-            definitions: res.data,
-        })
+
+        const res = await axios.patch(`/api/topics/${topicId}/definitions/${defId}`, payload)
+
+        if (aLike) {
+            const response = await axios.patch(`/api/topics/${topicId}/definitions/${defId}/likes/${aLike.id}`, likePayload)
+        } else {
+            // CREATE A POST IN LIKE CONTROLLER
+            await axios.post(`/api/topics/${topicId}/definitions/${defId}/likes`, likePayload)
+        }
+        await this.getDefinitions()
     }
+
+
 
     // Subtract one from counter and save as Disliked
     deleteFromCounter = async (id) => {
@@ -146,3 +163,4 @@ const DefinitionContainer = styled.div`
         height: 20px;
     }
 `
+

@@ -6,8 +6,6 @@ class CreateDefinitionForm extends Component {
         definition: {
             post: '',
             count: 0,
-            liked: false,
-            disliked: false
         }
     }
 

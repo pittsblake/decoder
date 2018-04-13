@@ -15,6 +15,7 @@ oop = Topic.create({title: "OOP"})
 
 #user
 blake = User.create({email: 'blake@gmail.com', password: 'blahblah', password_confirmation: 'blahblah'})
+joe = User.create({email: 'joe@gmail.com', password: 'blahblah', password_confirmation: 'blahblah'})
 
 
 #Definitions
@@ -24,3 +25,4 @@ oop_def =  Definition.create({topic_id: oop.id, user_id: blake.id, post: "I like
 
 
 bLiked = Like.create({definition_id: mvc_def.id, user_id: blake.id, liked: true, disliked: false})
+jLiked = Like.create({definition_id: mvc_def.id, user_id: joe.id, liked: true, disliked: false})

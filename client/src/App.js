@@ -90,7 +90,7 @@ class App extends Component {
 
   getTopics = async () => {
     const res = await axios.get('/api/topics')
-    console.log(res.data)
+    // console.log(res.data)
     this.setState({topics: res.data})
   }
 
