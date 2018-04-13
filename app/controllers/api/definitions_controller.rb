@@ -5,13 +5,21 @@ class Api::DefinitionsController < ApplicationController
   def index
     topic = Topic.find(params[:topic_id])
     @definitions = topic.definitions.all.order(count: :desc)
-    render json: @definitions, include: [:likes]
+    @likes = @definitions.map do |definition|
+          definition.likes
+    end
+    render json: { 
+      definitions: @definitions,
+      likes: @likes.flatten,
+      current_user: current_user.id
+    }
     
   end
 
   def show
     @definition = Definition.find(params[:id])
-    render json: @definition, include: [:likes]
+    render json: @definition, include: :likes
+    
   end
 
   def create

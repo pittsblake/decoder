@@ -19,6 +19,9 @@ class Api::LikesController < ApplicationController
         @user = current_user
 
         @like = Like.new(like_params)
+        @like.user_id = current_user.id
+
+        @like.definition_id = @definition.id
 
         @definition.likes << @like
         @user.likes << @like

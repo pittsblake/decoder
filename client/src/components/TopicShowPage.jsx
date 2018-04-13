@@ -7,15 +7,20 @@ import CreateDefinitionForm from './CreateDefinitionForm'
 class TopicShowPage extends Component {
 
     state = {
+        currentUser: 0,
+        allLikes: [],
         topic: {},
-        definitions: [],
+        definitions: [ {
+            definitions: []
+        }
+        ],
         createDefinition: false
     }
 
     componentDidMount = async () => {
         await this.getSingleTopic()
         await this.getDefinitions()
-
+        //console.log(this.state.allLikes)
     }
 
     getSingleTopic = async () => {
@@ -30,8 +35,11 @@ class TopicShowPage extends Component {
     getDefinitions = async () => {
         const topicId = this.props.match.params.id
         const res = await axios.get(`/api/topics/${topicId}/definitions`)
+        console.log(res.data)
         this.setState({
-            definitions: res.data
+            definitions: res.data.definitions,
+            currentUser: res.data.current_user,
+            allLikes: res.data.likes
         })
     }
 
@@ -53,7 +61,7 @@ class TopicShowPage extends Component {
         payload = { count: increase }
 
 
-        let aLike = singleDefinition.likes.find((like) => {
+        let aLike = this.state.allLikes.find((like) => {
             return like
         })
         console.log(aLike)
@@ -68,10 +76,13 @@ class TopicShowPage extends Component {
         //UPDATES THE COUNT
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${defId}`, payload)
 
-        if (aLike) {
+        //IF A LIKE EXIST AND THE LIKE MATCHES THE USERID OF THE CURRENT USER
+            //THEN UPDATE THE LIKE FOR THE USER IN THE DATABASW
+        if (aLike && aLike.user_id == this.state.currentUser) {
             const response = await axios.patch(`/api/topics/${topicId}/definitions/${defId}/likes/${aLike.id}`, likePayload)
         } else {
-            // CREATE A POST IN LIKE CONTROLLER
+            // ELSE IF A LIKE DOES NOT EXIST FOR THE CURRENT USER
+                // THEN CREATE A NEW LIKE
             await axios.post(`/api/topics/${topicId}/definitions/${defId}/likes`, likePayload)
         }
         await this.getDefinitions()
@@ -94,7 +105,7 @@ class TopicShowPage extends Component {
             count: decrease,
         }
 
-        let aLike = singleDefinition.likes.find((like) => {
+        let aLike = this.state.allLikes.find((like) => {
             return like
         })
 
@@ -110,7 +121,7 @@ class TopicShowPage extends Component {
 
         // IF A LIKE EXISTS BY THE USER THEN SEND AN UPDATE REQUEST
         // IF A LIKE DOES NOT EXIST BY THE USER, THEN MAKE A POST REQUEST
-        if (aLike) {
+        if (aLike && aLike.user_id == this.state.currentUser) {
             const response = await axios.patch(`/api/topics/${topicId}/definitions/${defId}/likes/${aLike.id}`, likePayload)
         } else {
             // CREATE A POST IN LIKE CONTROLLER
