@@ -9,7 +9,6 @@ class TopicShowPage extends Component {
     state = {
         topic: {},
         definitions: [],
-        //likes: [],
         createDefinition: false
     }
 
@@ -66,6 +65,7 @@ class TopicShowPage extends Component {
             disliked: false
         }
 
+        //UPDATES THE COUNT
         const res = await axios.patch(`/api/topics/${topicId}/definitions/${defId}`, payload)
 
         if (aLike) {
@@ -80,26 +80,44 @@ class TopicShowPage extends Component {
 
 
     // Subtract one from counter and save as Disliked
-    deleteFromCounter = async (id) => {
+    deleteFromCounter = async (defId) => {
         const topicId = this.props.match.params.id
 
-        let payload = this.state.definitions.find((definition) => {
-            if (id == definition.id) {
+        let singleDefinition = this.state.definitions.find((definition) => {
+            if (defId == definition.id) {
                 return definition
             }
         })
-
+        let payload = singleDefinition
         const decrease = payload.count - 1
         payload = {
             count: decrease,
-            disliked: true,
-            liked: false
         }
-        // console.log(payload)
-        const res = await axios.patch(`/api/topics/${topicId}/definitions/${id}`, payload)
-        this.setState({
-            definitions: res.data,
+
+        let aLike = singleDefinition.likes.find((like) => {
+            return like
         })
+
+        let likePayload = aLike
+
+        likePayload = {
+            liked: false,
+            disliked: true
+        }
+
+        //UPDATES THE COUNT
+        const res = await axios.patch(`/api/topics/${topicId}/definitions/${defId}`, payload)
+
+        // IF A LIKE EXISTS BY THE USER THEN SEND AN UPDATE REQUEST
+        // IF A LIKE DOES NOT EXIST BY THE USER, THEN MAKE A POST REQUEST
+        if (aLike) {
+            const response = await axios.patch(`/api/topics/${topicId}/definitions/${defId}/likes/${aLike.id}`, likePayload)
+        } else {
+            // CREATE A POST IN LIKE CONTROLLER
+            await axios.post(`/api/topics/${topicId}/definitions/${defId}/likes`, likePayload)
+        }
+        await this.getDefinitions()
+
     }
 
     deletePost = async (id) => {
